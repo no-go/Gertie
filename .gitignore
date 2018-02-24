@@ -11,8 +11,10 @@ gen/
 out/
 
 # Gradle files
+app/gradle/
 app/.gradle/
 app/build/
+app/app/build/
 
 # Local configuration file (sdk path, etc)
 app/local.properties

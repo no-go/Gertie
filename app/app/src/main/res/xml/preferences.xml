@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/messagePref">
+        <EditTextPreference
+            android:defaultValue="'#'HH:mm:ss dd.MM.yyyy cccc"
+            android:key="dateFormat"
+            android:summary="@string/dateFormat_summary"
+            android:title="@string/dateFormat"/>
+        <EditTextPreference
+            android:defaultValue="(Nachricht von \+?[\d- ]*)"
+            android:key="Trim_Regex"
+            android:summary="@string/Trim_Regex_summary"
+            android:title="@string/Trim_Regex"/>
+        <EditTextPreference
+            android:defaultValue="200"
+            android:key="messageSize"
+            android:summary="@string/messageSize_summary"
+            android:title="@string/messageSize"/>
+        <EditTextPreference
+            android:defaultValue="100"
+            android:key="messageLimit"
+            android:summary="@string/messageLimit_summary"
+            android:title="@string/messageLimit"/>
+        <EditTextPreference
+            android:defaultValue="~"
+            android:key="timeRequest"
+            android:summary="@string/timeRequest_summary"
+            android:title="@string/timeRequest"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="aggressive_msg"
+            android:title="@string/aggressive_msg"
+            android:summary="@string/aggressive_msg_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/hint">
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="notifyHint"
+            android:summary="@string/notifyHint_summary"
+            android:title="@string/notifyHint" />
+        <EditTextPreference
+            android:defaultValue="0"
+            android:key="notifyHintLimit"
+            android:summary="@string/notifyHintLimit_summary"
+            android:title="@string/notifyHintLimit" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/bleLogic">
+
+        <EditTextPreference
+            android:defaultValue="DE:D2:4A:F4:F9:47"
+            android:key="ble_addr"
+            android:summary="@string/ble_addr_summary"
+            android:title="@string/ble_addr"/>
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/device_type_names"
+            android:entryValues="@array/device_type_values"
+            android:key="device_type"
+            android:title="@string/device_type" />
+
+        <EditTextPreference
+            android:defaultValue="00002902-0000-1000-8000-00805f9b34fb"
+            android:key="ble_cccd"
+            android:summary="@string/free_config"
+            android:title="@string/ble_cccd"/>
+        <EditTextPreference
+            android:defaultValue="6e400001-b5a3-f393-e0a9-e50e24dcca9e"
+            android:key="ble_srv"
+            android:summary="@string/free_config"
+            android:title="@string/ble_srv"/>
+        <EditTextPreference
+            android:defaultValue="6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+            android:key="ble_rxuuid"
+            android:summary="@string/free_config"
+            android:title="@string/ble_rxuuid"/>
+        <EditTextPreference
+            android:defaultValue="6e400003-b5a3-f393-e0a9-e50e24dcca9e"
+            android:key="ble_txuuid"
+            android:summary="@string/free_config"
+            android:title="@string/ble_txuuid"/>
+
+        <EditTextPreference
+            android:defaultValue="8"
+            android:key="packet_limit"
+            android:summary="@string/packetLimit_summary"
+            android:title="@string/packetLimit" />
+        <EditTextPreference
+            android:defaultValue="60"
+            android:key="packet_pause"
+            android:summary="@string/packetPause_summary"
+            android:title="@string/packetPause" />
+    </PreferenceCategory>
+</PreferenceScreen>

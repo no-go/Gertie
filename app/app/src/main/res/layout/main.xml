@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/rssival"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_dark"
+        android:text="@string/check_device_address"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textIsSelectable="false"
+        android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/btn_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rssival"
+        android:background="@android:color/holo_purple"
+        android:text="@string/connect" />
+
+    <EditText
+        android:id="@+id/sendText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/sendButton"
+        android:ems="10"
+        android:enabled="false"
+        android:visibility="invisible"
+        android:fontFamily="1"
+        android:shadowRadius="1" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_select"
+        android:layout_alignParentEnd="true"
+        android:enabled="false"
+        android:visibility="invisible"
+        android:text="@string/send" />
+
+    <Button
+        android:id="@+id/forwardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sendText"
+        android:layout_centerHorizontal="true"
+        android:text="foward" />
+
+    <Button
+        android:id="@+id/leftBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/forwardBtn"
+        android:text="left" />
+
+    <Button
+        android:id="@+id/rightBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/forwardBtn"
+        android:text="right" />
+
+    <Button
+        android:id="@+id/backwardBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/forwardBtn"
+        android:layout_alignStart="@+id/forwardBtn"
+        android:layout_below="@+id/rightBtn"
+        android:layout_marginBottom="20dp"
+        android:text="back" />
+
+    <Button
+        android:id="@+id/ohBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/backwardBtn"
+        android:layout_margin="2dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-O" />
+
+    <Button
+        android:id="@+id/silentBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ohBtn"
+        android:layout_alignBottom="@+id/ohBtn"
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@+id/ohBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-x" />
+
+    <Button
+        android:id="@+id/goodBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/silentBtn"
+        android:layout_alignBottom="@+id/silentBtn"
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@+id/silentBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-)" />
+
+    <Button
+        android:id="@+id/badBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/goodBtn"
+        android:layout_alignBottom="@+id/goodBtn"
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@+id/goodBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-(" />
+
+    <Button
+        android:id="@+id/blinkyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/badBtn"
+        android:layout_alignBottom="@+id/badBtn"
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@+id/badBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text=";-)" />
+
+    <Button
+        android:id="@+id/pooBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/unsureBtn"
+        android:layout_alignBottom="@+id/unsureBtn"
+        android:layout_alignStart="@+id/goodBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text="E-:" />
+
+    <Button
+        android:id="@+id/hmmBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ohBtn"
+        android:layout_margin="2dp"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-/" />
+
+    <Button
+        android:id="@+id/unsureBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/silentBtn"
+        android:layout_margin="2dp"
+        android:layout_toEndOf="@+id/hmmBtn"
+        android:background="@android:color/holo_orange_light"
+        android:text=":-I" />
+
+
+</RelativeLayout>
