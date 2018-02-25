@@ -2,7 +2,7 @@
  * Copyright (c) 2015, Nordic Semiconductor
  * All rights reserved.
  * 
- * 2016 - modified many parts by Jochen Peters
+ * 2018 - modified many parts by Jochen Peters
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
  *
@@ -23,6 +23,7 @@
  */
 package click.dummer.Gertie;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,11 +71,11 @@ public class MainActivity extends Activity {
     public static final String TAG = MainActivity.class.getSimpleName();
     private Context ctx;
 
-    private static final String FLATTR_LINK = "https://flattr.com/thing/5195407";
-    private static final String PROJECT_LINK = "https://github.com/no-go/UART-Smartwatch";
+    private static final String PROJECT_LINK = "https://github.com/no-go/Gertie/";
+    private static final String FLATTR_ID = "o6wo7q";
+    private String FLATTR_LINK;
 
     private static final char DEFAULT_BLINK_LENGTH = 'B';
-    private static final int WATCH_REQUEST = 1;
     private static final int REQUEST_SELECT_DEVICE = 42;
     private static final int REQUEST_ENABLE_BT = 2;
 
@@ -102,32 +103,7 @@ public class MainActivity extends Activity {
     Button backwardBtn;
     Button leftBtn;
     Button rightBtn;
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == WATCH_REQUEST) {
-                Date dNow = new Date();
-                String dateFormat = mPreferences.getString("dateFormat", "'#'HH:mm:ss");
-                SimpleDateFormat ft =
-                        new SimpleDateFormat(dateFormat);
-                String timeStr = ft.format(dNow);
-
-                if (btnSend.isEnabled()) {
-                    sendMsg(timeStr  + myNewLine(timeStr) + listMessage.getText().toString());
-                }
-            }
-        }
-    };
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem mi1 = menu.findItem(R.id.action_toasty);
-        mi1.setChecked(mPreferences.getBoolean("toasty", false));
-        MenuItem mi2 = menu.findItem(R.id.action_directSend);
-        mi2.setChecked(mPreferences.getBoolean("directSend", false));
-        return super.onPrepareOptionsMenu(menu);
-    }
+    ArrayList<Button> soundBtn;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,24 +132,6 @@ public class MainActivity extends Activity {
                 Intent newIntent = new Intent(MainActivity.this, DeviceListActivity.class);
                 startActivityForResult(newIntent, REQUEST_SELECT_DEVICE);
                 break;
-            case R.id.action_directSend:
-                if (item.isChecked()) {
-                    mPreferences.edit().putBoolean("directSend", false).apply();
-                    item.setChecked(false);
-                } else {
-                    mPreferences.edit().putBoolean("directSend", true).apply();
-                    item.setChecked(true);
-                }
-                break;
-            case R.id.action_toasty:
-                if (item.isChecked()) {
-                    mPreferences.edit().putBoolean("toasty", false).apply();
-                    item.setChecked(false);
-                } else {
-                    mPreferences.edit().putBoolean("toasty", true).apply();
-                    item.setChecked(true);
-                }
-                break;
             default:
                 return false;
         }
@@ -185,6 +143,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         ctx = this;
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        soundBtn = new ArrayList<>(9);
+
+        try {
+            FLATTR_LINK = "https://flattr.com/submit/auto?fid="+FLATTR_ID+"&url="+
+                    java.net.URLEncoder.encode(PROJECT_LINK, "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.main);
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -209,6 +175,16 @@ public class MainActivity extends Activity {
         btnConnectDisconnect = (Button) findViewById(R.id.btn_select);
         btnSend = (Button) findViewById(R.id.sendButton);
         edtMessage = (EditText) findViewById(R.id.sendText);
+
+        soundBtn.add(0,(Button) findViewById(R.id.btn1));
+        soundBtn.add(1,(Button) findViewById(R.id.btn2));
+        soundBtn.add(2,(Button) findViewById(R.id.btn3));
+        soundBtn.add(3,(Button) findViewById(R.id.btn4));
+        soundBtn.add(4,(Button) findViewById(R.id.btn5));
+        soundBtn.add(5,(Button) findViewById(R.id.btn6));
+        soundBtn.add(6,(Button) findViewById(R.id.btn7));
+        soundBtn.add(7,(Button) findViewById(R.id.btn8));
+        soundBtn.add(8,(Button) findViewById(R.id.btn9));
 
         service_init();
 
@@ -336,8 +312,9 @@ public class MainActivity extends Activity {
             }
         });
 
-
-
+        for (int btni=0; btni < soundBtn.size(); btni++) {
+            soundBtn.get(btni).setOnClickListener(new OnSoundClickListener(btni+1));
+        }
 
         nReceiver = new NotificationReceiver();
         IntentFilter filter = new IntentFilter();
@@ -346,6 +323,8 @@ public class MainActivity extends Activity {
     }
 
     public void sendMsg(String message) {
+        if (!btnSend.isEnabled()) return;
+
         // catch the rest of emoji
         Pattern unicodeOutliers = Pattern.compile("\\p{InEmoticons}");
         Matcher unicodeOutlierMatcher = unicodeOutliers.matcher(message);
@@ -615,6 +594,20 @@ public class MainActivity extends Activity {
                     }
                 }
             }
+        }
+    }
+
+    class OnSoundClickListener implements View.OnClickListener {
+        private int _btnnr;
+
+        public OnSoundClickListener(int btnnr) {
+            super();
+            _btnnr = btnnr;
+        }
+
+        @Override
+        public void onClick(View view) {
+            sendMsg(String.valueOf(_btnnr));
         }
     }
 }

@@ -2,7 +2,10 @@
 #include <SPI.h>
 #include <MsTimer2.h>
 
-#define LED   13
+// JOKE LED LASER
+#define LEDLASER  A3
+
+// motor
 #define LEFT1  2
 #define LEFT2  3
 #define RIGHT1 4
@@ -19,10 +22,41 @@
 // create an instance of the library (cs,dc,reset)
 TFT TFTscreen = TFT(A0, A2, A1);
 
+#include <Wtv020sd16p.h>
+int resetPin = 6;  // The pin number of the reset RST
+int busyPin  = 7;  // The pin number of the  busy P06
+int clockPin = 9;  // The pin number of the clock P04
+int dataPin  = 8;  // The pin number of the  data P05
+// P02 NEXT       k1
+// P03 PREV       k2
+// P07 play/stop  k3
+Wtv020sd16p wtv020sd16p(resetPin,clockPin,dataPin,busyPin);
+
+enum Sounds {
+  // for a speaking clock
+  ZERO,
+  EIN,ZWEI,DREI,VIER,FUENF,SECHS,SIEBEN,ACHT,NEUN,ZEHN,
+  ELEFEN,TWELFE,
+  ZWANZIG,DREIZIG,VIERZIG,FUENFZIG,
+  OCLOCK,UND,IT_IS,EINS,
+  // robot movie voices
+  ROBOTSOUND1,
+  ROBOTSOUND2,
+  ROBOTSOUND3,
+  ROBOTSOUND4,
+  ROBOTSOUND5,
+  ROBOTSOUND6,
+  ROBOTSOUND7,
+  ROBOTSOUND8,
+  ROBOTSOUND9
+};
+
 int wasOn=-1;
+int laserTimer=-1;
 
 inline void ticking() {
   if (wasOn >= 0) wasOn++;
+  if (laserTimer >= 0) laserTimer++;
 }
 
 void clearM() {
@@ -89,18 +123,34 @@ void silent() {
   TFTscreen.text("x", 42, 32);
 }
 
+inline void laser() {
+  if (laserTimer < 30) return;
+  
+  if (laserTimer < 50) {
+    digitalWrite(LEDLASER, laserTimer%4==0? LOW:HIGH);      
+  } else if (laserTimer < 90) {
+    digitalWrite(LEDLASER, laserTimer%2==0? HIGH:LOW);
+  } else {
+    digitalWrite(LEDLASER, HIGH);      
+  }
+}
+
 void setup() {
   Serial.begin(SERIAL_SPEED);
-  pinMode(LEFT1, OUTPUT);
-  pinMode(LEFT2, OUTPUT);
-  pinMode(RIGHT1, OUTPUT);
-  pinMode(RIGHT2, OUTPUT);
+  pinMode(LEDLASER, OUTPUT);
+  pinMode(LEFT1,    OUTPUT);
+  pinMode(LEFT2,    OUTPUT);
+  pinMode(RIGHT1,   OUTPUT);
+  pinMode(RIGHT2,   OUTPUT);
   randomSeed(analogRead(A7));
   
   TFTscreen.begin();
   TFTscreen.setTextSize(7);
   renew();
   good();
+  wtv020sd16p.reset();
+  delay(300);
+  wtv020sd16p.asyncPlayVoice(ROBOTSOUND9);
   
   MsTimer2::set(100, ticking);
   MsTimer2::start();
@@ -108,12 +158,11 @@ void setup() {
 
 void loop() {
   if (random(30000) == 10) blinky();
+  laser();
   
   if (Serial.available()) {
     char inChar = (char) Serial.read();
-    if (inChar == '0') {
-      digitalWrite(LED, LOW);      
-    }
+    
     if (inChar == ')') {
       good();
     } else if (inChar == '(') {
@@ -130,33 +179,48 @@ void loop() {
       unsure();
     } else if (inChar == 'x') {
       silent();
-    }
-
-    if (inChar == '1') {
-      digitalWrite(LED, HIGH);      
-    }
-    if (inChar == 'l') {
+    } else if (inChar == '0') {
+      wtv020sd16p.asyncPlayVoice(ZERO);
+    } else if (inChar == '1') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND1);
+    } else if (inChar == '2') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND2);
+    } else if (inChar == '3') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND3);
+      // laser on
+      laserTimer=0;
+      ohh();
+    } else if (inChar == '4') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND4);
+    } else if (inChar == '5') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND5);
+    } else if (inChar == '6') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND6);
+    } else if (inChar == '7') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND7);
+    } else if (inChar == '8') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND8);
+    } else if (inChar == '9') {
+      wtv020sd16p.asyncPlayVoice(ROBOTSOUND9);
+    } else if (inChar == 'l') {
       digitalWrite(LEFT1,  LOW);
       digitalWrite(LEFT2,  HIGH);
       digitalWrite(RIGHT1, HIGH);
       digitalWrite(RIGHT2, LOW);
       wasOn=0;
-    }
-    if (inChar == 'r') {
+    } else if (inChar == 'r') {
       digitalWrite(LEFT1,  HIGH);
       digitalWrite(LEFT2,  LOW);
       digitalWrite(RIGHT1, LOW);
       digitalWrite(RIGHT2, HIGH);
       wasOn=0;
-    }
-    if (inChar == 'b') {
+    } else if (inChar == 'b') {
       digitalWrite(LEFT1,  LOW);
       digitalWrite(LEFT2,  HIGH);
       digitalWrite(RIGHT1, LOW);
       digitalWrite(RIGHT2, HIGH);
       wasOn=0;
-    }
-    if (inChar == 'f') {
+    } else if (inChar == 'f') {
       digitalWrite(LEFT1,  HIGH);
       digitalWrite(LEFT2,  LOW);
       digitalWrite(RIGHT1, HIGH);
@@ -165,11 +229,17 @@ void loop() {
     }
   }
 
-  if (wasOn > 10) {
+  if (wasOn > 7) {
     wasOn=-1;
     digitalWrite(LEFT1,  LOW);
     digitalWrite(LEFT2,  LOW);
     digitalWrite(RIGHT1, LOW);
     digitalWrite(RIGHT2, LOW);
+  }
+  
+  if (laserTimer > 150) {
+    laserTimer=-1;
+    good();
+    digitalWrite(LEDLASER, LOW);
   }
 }

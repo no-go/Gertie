@@ -6,8 +6,8 @@ android {
         applicationId "click.dummer.Gertie"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 32
-        versionName "3.2"
+        versionCode 33
+        versionName "3.3"
     }
 
 

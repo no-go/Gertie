@@ -4,16 +4,6 @@
     <PreferenceCategory
         android:title="@string/messagePref">
         <EditTextPreference
-            android:defaultValue="'#'HH:mm:ss dd.MM.yyyy cccc"
-            android:key="dateFormat"
-            android:summary="@string/dateFormat_summary"
-            android:title="@string/dateFormat"/>
-        <EditTextPreference
-            android:defaultValue="(Nachricht von \+?[\d- ]*)"
-            android:key="Trim_Regex"
-            android:summary="@string/Trim_Regex_summary"
-            android:title="@string/Trim_Regex"/>
-        <EditTextPreference
             android:defaultValue="200"
             android:key="messageSize"
             android:summary="@string/messageSize_summary"
@@ -23,30 +13,6 @@
             android:key="messageLimit"
             android:summary="@string/messageLimit_summary"
             android:title="@string/messageLimit"/>
-        <EditTextPreference
-            android:defaultValue="~"
-            android:key="timeRequest"
-            android:summary="@string/timeRequest_summary"
-            android:title="@string/timeRequest"/>
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="aggressive_msg"
-            android:title="@string/aggressive_msg"
-            android:summary="@string/aggressive_msg_summary"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/hint">
-        <EditTextPreference
-            android:defaultValue=""
-            android:key="notifyHint"
-            android:summary="@string/notifyHint_summary"
-            android:title="@string/notifyHint" />
-        <EditTextPreference
-            android:defaultValue="0"
-            android:key="notifyHintLimit"
-            android:summary="@string/notifyHintLimit_summary"
-            android:title="@string/notifyHintLimit" />
     </PreferenceCategory>
 
     <PreferenceCategory
